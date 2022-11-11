@@ -223,7 +223,7 @@ export const StakeActiveAllComponent = ({
           stakeDaysValue * unstakedTokenIds.length,
           TOKEN_DECIMALS
         )} */}
-        SWIWA
+        SHIWA
       </b>
       <div className={styles.vdaysBtnWrap}>
         {REWARDS_DATA.map(({ name, value, tierId }, index) => {
