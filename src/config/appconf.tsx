@@ -36,7 +36,8 @@ export const BASE_URI =
 
 //[Edit]Reward configs
 export const REWARDS_INFO = [
-  1000000000000000, 2500000000000000, 4000000000000000,
+  // 200000000000000000, 400000000000000000, 600000000000000000,
+  2000000000000000, 40000000000000000, 6000000000000000,
 ]; //Rewards For 30D, 60D, 90D accordingly [without decimals]
 export const UNLOCK_INFO = [2592000, 5184000, 7776000]; //durations in seconds for 30D, 60D, 90D
 export const TOKEN_DECIMALS = 9; //ERC20 token decimals
