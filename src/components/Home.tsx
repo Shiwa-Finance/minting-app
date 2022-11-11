@@ -4,6 +4,9 @@ import { BigNumber } from "ethers";
 import { useEffect, useState } from "react";
 import { useAccount, useContract, useSigner } from "wagmi";
 import icon from "../assets/siwamain.gif";
+import bronze from "../assets/bronze.png";
+import silver from "../assets/silver.png";
+import gold from "../assets/gold.png";
 
 import {
   NFTCollectionContractAddress,
@@ -184,12 +187,13 @@ const Home = () => {
         </h2>
         <div className={styles.NFTBoxGrid}>
           <div className={styles.NFTBox}>
+            <img src={bronze} alt="" width={100} height={100} />
             <h2>Bronze Tier</h2>
             <p className={styles.justify}>
               ■ NFTs will be locked for minimum of 30days
             </p>
             <p className={styles.justify}>
-              ■ Rewards will be 1000000Shiwa tokens for each NFT you stake in
+              ■ Rewards will be 200000000Shiwa tokens for each NFT you stake in
               this tier
             </p>
 
@@ -199,12 +203,13 @@ const Home = () => {
             </p>
           </div>
           <div className={styles.NFTBox}>
+            <img src={silver} alt="" width={100} height={100} />
             <h2>Silver Tier</h2>
             <p className={styles.justify}>
               ■ NFTs will be locked for minimum of 60days
             </p>
             <p className={styles.justify}>
-              ■ Rewards will be 2500000Shiwa tokens for each NFT you stake in
+              ■ Rewards will be 400000000Shiwa tokens for each NFT you stake in
               this tier
             </p>
             <p className={styles.justify}>
@@ -213,12 +218,13 @@ const Home = () => {
             </p>
           </div>
           <div className={styles.NFTBox}>
+            <img src={gold} alt="" width={100} height={100} />
             <h2>Gold Tier</h2>
             <p className={styles.justify}>
               ■ NFTs will be locked for minimum of 90days
             </p>
             <p className={styles.justify}>
-              ■ Rewards will be 4000000Shiwa tokens for each NFT you stake in
+              ■ Rewards will be 600000000Shiwa tokens for each NFT you stake in
               this tier
             </p>
             <p className={styles.justify}>
