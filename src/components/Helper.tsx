@@ -117,7 +117,8 @@ export const TokenHelperComponent = ({
       <div className={styles.rewardsTokenItem}>
         <h3 className={styles.tokenLabel}>Rewards Info</h3>
         <div className={styles.rewardsTokenValue}>
-          <b>{ethers.utils.formatUnits(activeDaysValue, TOKEN_DECIMALS)}</b>
+          <b>{activeDaysValue}</b>
+          {/* <b>{ethers.utils.formatUnits(activeDaysValue, TOKEN_DECIMALS)}</b> */}
           <div className={styles.daysBtnWrap}>
             {REWARDS_DATA.map(({ name, value }, index) => {
               return value === activeDaysValue ? (
@@ -161,7 +162,8 @@ export const StakeActiveComponent = ({ id, tierStake }: StakeActiveProps) => {
   return (
     <>
       <b className={styles.stakeDaysValue}>
-        {ethers.utils.formatUnits(stakeDaysValue, TOKEN_DECIMALS)}
+        {stakeDaysValue}
+        {/* {ethers.utils.formatUnits(stakeDaysValue, TOKEN_DECIMALS)} */}
       </b>
       <div className={styles.daysBtnWrap}>
         {REWARDS_DATA.map(({ name, value, tierId }, index) => {
@@ -216,10 +218,11 @@ export const StakeActiveAllComponent = ({
       <hr className={`${styles.divider} ${styles.spacerTop}`} />
       <hr className={`${styles.divider} ${styles.spacerTop}`} />
       <b className={styles.vstakeDaysValue}>
-        {ethers.utils.formatUnits(
+        {stakeDaysValue * unstakedTokenIds.length}
+        {/* {ethers.utils.formatUnits(
           stakeDaysValue * unstakedTokenIds.length,
           TOKEN_DECIMALS
-        )}{" "}
+        )} */}
         SWIWA
       </b>
       <div className={styles.vdaysBtnWrap}>
@@ -360,10 +363,7 @@ export const NFTHelperComponent = ({
                 <h5>Unlocking {getUnlockTime(stakedTime, tierId)}</h5>
                 <h5>
                   Staked for
-                  {ethers.utils.formatUnits(
-                    REWARDS_INFO[tierId],
-                    TOKEN_DECIMALS
-                  )}
+                  {REWARDS_INFO[tierId]}
                 </h5>
                 <img
                   src={`${getGateway()}${image.replace("ipfs://", "")}`}
