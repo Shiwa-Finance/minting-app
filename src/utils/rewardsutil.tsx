@@ -10,6 +10,6 @@ export const calcPendingRewards = (stakedNFTs: any[]) => {
         totalRewards += REWARDS_INFO[elem.tierId]
     });
 
-    const formattedRewards = ethers.utils.formatUnits(totalRewards, TOKEN_DECIMALS);
+    const formattedRewards = totalRewards;
     return formattedRewards;
 };
