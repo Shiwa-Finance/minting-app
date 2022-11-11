@@ -4,16 +4,21 @@
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /* Set core body defaults */
 body {
-    min-height: 100vh;
-    text-rendering: optimizeSpeed;
-    line-height: 1.5;
-    padding-bottom: 250px;
-    background: url("../assets/blur.png");
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+  padding-bottom: 250px;
+  background: url("../assets/blur.jpg") no-repeat center center fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
 }
 
 /* Inherit fonts for inputs and buttons */
@@ -21,26 +26,26 @@ input,
 button,
 textarea,
 select {
-    font: inherit;
+  font: inherit;
 }
 
 :root {
-    --black: #1c1e21;
-    --white: #ffffff;
-    --tw-color1: #05ad75;
-    --tw-color1-hover: #008f75;
+  --black: #1c1e21;
+  --white: #ffffff;
+  --tw-color1: #05ad75;
+  --tw-color1-hover: #008f75;
 }
 
 body {
-    /* background: var(--black); */
-    font-family: "Inter", sans-serif;
-    color: var(--white);
-    display: flex;
-    margin: 0;
-    text-align: center;
-    /* background-repeat: no-repeat; */
+  /* background: var(--black); */
+  font-family: "Inter", sans-serif;
+  color: var(--white);
+  display: flex;
+  margin: 0;
+  text-align: center;
+  /* background-repeat: no-repeat; */
 }
 
 h2 {
-    font-size: 2rem;
+  font-size: 2rem;
 }
