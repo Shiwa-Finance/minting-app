@@ -1,7 +1,5 @@
-import { ethers } from "ethers";
 import {
-    REWARDS_INFO,
-    TOKEN_DECIMALS
+    REWARDS_INFO
 } from "../config/appconf";
 
 export const calcPendingRewards = (stakedNFTs: any[]) => {

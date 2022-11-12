@@ -16,7 +16,7 @@ import { BigNumber, ethers } from "ethers";
 import axios from "axios";
 import rateLimit from "axios-rate-limit";
 import { getGateway, axiosConfig } from "../interface/url/gateway";
-import { getUnlockTime, getRewardInfo } from "../utils/daysutil";
+import { getUnlockTime } from "../utils/daysutil";
 import { calcPendingRewards } from "../utils/rewardsutil";
 
 type TokenProps = {
@@ -323,7 +323,7 @@ export const NFTHelperComponent = ({
     const tokenMetadata = await Promise.all(
       stakedNFTs.map(async (elem) => {
         return await axiosHTTP.get(
-          `${getGateway()}${BASE_URI}/${parseInt(elem.tokenId, 16)}.json`
+          `${getGateway()}${BASE_URI}/${elem.tokenId}.json`
         );
       })
     );
@@ -362,8 +362,7 @@ export const NFTHelperComponent = ({
                 <h3>{name}</h3>
                 <h5>Unlocking {getUnlockTime(stakedTime, tierId)}</h5>
                 <h5>
-                  Staked for
-                  {REWARDS_INFO[tierId]}
+                  Staked for {REWARDS_INFO[tierId]}
                 </h5>
                 <img
                   src={`${getGateway()}${image.replace("ipfs://", "")}`}
@@ -389,7 +388,8 @@ export const NFTHelperComponent = ({
                 </div>
               </div>
             );
-          })}
+          })
+        }
       </div>
       {stakedMetadata?.length > 0 && (
         <>
@@ -427,7 +427,8 @@ export const NFTHelperComponent = ({
                 </div>
               );
             }
-          )}
+          )
+        }
       </div>
       {unstakedMetadata?.length > 0 && (
         <StakeActiveAllComponent

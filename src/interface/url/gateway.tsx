@@ -1,10 +1,12 @@
 import _ from 'lodash';
 export const gatewayUrls = [
-    // 'https://ipfs.io/ipfs/',
-    'https://gateway.ipfs.io/ipfs/',
-    'https://gateway.pinata.cloud/ipfs/',
-    'https://ipfs.fleek.co/ipfs/',
-    'https://cloudflare-ipfs.com/ipfs/'
+    // "https://ipfs.io/ipfs/",
+    // "https://gateway.ipfs.io/ipfs/",
+    // "https://gateway.pinata.cloud/ipfs/",
+    "https://ipfs.fleek.co/ipfs/",
+    "https://cloudflare-ipfs.com/ipfs/",
+    "https://nftstorage.link/ipfs/",
+    "https://w3s.link/ipfs/"
 ];
 
 export const getGateway = () => {

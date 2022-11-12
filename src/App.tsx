@@ -3,9 +3,7 @@ import './styles/App.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit';
 import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
-// import { infuraProvider } from 'wagmi/providers/infura';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
-//import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import Home from './components/Home';
 import {
@@ -18,11 +16,6 @@ const { chains, provider, webSocketProvider } = configureChains(
       chain.polygonMumbai
   ],
   [
-    // infuraProvider({
-    //   // This is Alchemy's default API key.
-    //   // You can get your own at https://dashboard.alchemyapi.io
-    //   // apiKey: '_gg7wSSi0KMBsdKnGVfHDueq6xMB9EkC',
-    // }),
     jsonRpcProvider({
       rpc: (chain) => ({
         http: APP_CHAIN === 'MAINNET' ?

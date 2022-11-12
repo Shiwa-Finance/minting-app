@@ -56,7 +56,14 @@ const Home = () => {
     if (!isConnected && !signer) return;
     const fetchStakedNFTs = async () => {
       const stakedTokens = await stakingContract?.getTokenTiers(address);
-      setStakedNFTs(stakedTokens);
+      const stakedNumberTokens = await stakedTokens.map((elem: any) => {
+        return ({
+          tokenId: elem.tokenId.toNumber(),
+          stakedTime: elem.stakedTime.toNumber(),
+          tierId: elem.tierId.toNumber()
+        });
+      });
+      setStakedNFTs(stakedNumberTokens);
       setStakedFetched(true);
     };
 
@@ -259,6 +266,19 @@ const Home = () => {
         )}
 
         <hr className={`${styles.divider} ${styles.spacerTop}`} />
+        {!isStakedFetched &&
+          <div>
+            <h2>Your Staked NFTs</h2>
+            <div className={styles.NFTBoxGrid}>
+              <div className="loader" />
+            </div>
+            <hr className={`${styles.divider} ${styles.spacerTop}`} />
+            <h2>Your Unstaked NFTs</h2>
+            <div className={styles.NFTBoxGrid}>
+              <div className="loader" />
+            </div>
+          </div>
+        }
         {isConnected && signer && isStakedFetched && (
           <NFTHelperComponent
             address={address as string}
