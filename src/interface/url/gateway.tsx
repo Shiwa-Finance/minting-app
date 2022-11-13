@@ -17,3 +17,5 @@ export const axiosConfig = {
     maxRequests: 2,
     perMilliseconds: 100
 };
+
+export const imgTimeout = 1000;
