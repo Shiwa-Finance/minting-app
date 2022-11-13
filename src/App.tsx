@@ -1,25 +1,24 @@
-import "./styles/App.css";
+import './styles/App.css';
 
-import "@rainbow-me/rainbowkit/styles.css";
-import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
-import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
-import { jsonRpcProvider } from "wagmi/providers/jsonRpc"
-import { publicProvider } from "wagmi/providers/public";
-import { BrowserRouter } from "react-router-dom";
-import AppRoutes from "./routes/Routes";
+import '@rainbow-me/rainbowkit/styles.css';
+import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit';
+import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
+import { publicProvider } from 'wagmi/providers/public';
+import Home from './components/Home';
 import {
   APP_CHAIN
-} from "./config/appconf";
+} from './config/appconf';
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
-    APP_CHAIN === "MAINNET" ? chain.mainnet :
+    APP_CHAIN === 'MAINNET' ? chain.mainnet :
       chain.polygonMumbai
   ],
   [
     jsonRpcProvider({
       rpc: (chain) => ({
-        http: APP_CHAIN === "MAINNET" ?
+        http: APP_CHAIN === 'MAINNET' ?
           `https://rpc.ankr.com/eth` :
           `https://rpc-mumbai.maticvigil.com`
       }),
@@ -29,7 +28,7 @@ const { chains, provider, webSocketProvider } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: "RainbowKit App",
+  appName: 'RainbowKit App',
   chains,
 });
 
@@ -44,9 +43,9 @@ function App() {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
+        <div className="App">
+          <Home />
+        </div>
       </RainbowKitProvider>
     </WagmiConfig>
   );

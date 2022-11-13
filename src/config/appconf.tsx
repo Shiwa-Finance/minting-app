@@ -1,4 +1,8 @@
-import { CHAIN_TYPE, CHAINLIST_TYPE } from "../types/Types";
+type CHAIN_TYPE = "MAINNET" | "TESTNET";
+
+type CHAINLIST_TYPE = {
+  [index: string]: CHAIN_TYPE;
+};
 
 export const CHAIN_LIST: CHAINLIST_TYPE = {
   MAINNET: "MAINNET",
@@ -38,39 +42,21 @@ export const REWARDS_INFO = [
 export const UNLOCK_INFO = [2592000, 5184000, 7776000]; //durations in seconds for 30D, 60D, 90D
 export const TOKEN_DECIMALS = 9; //ERC20 token decimals
 
-export const REWARDS_NAME = {
-  GOLD: "Gold",
-  SILVER: "Silver",
-  BRONZE: "Bronze"
-};
-
-export const REWARDS_ID = {
-  GOLD: 2,
-  SILVER: 1,
-  BRONZE: 0
-};
-
-export const REWARDS_VALUE = {
-  GOLD: REWARDS_INFO[2],
-  SILVER: REWARDS_INFO[1],
-  BRONZE: REWARDS_INFO[0]
-};
-
 export const REWARDS_DATA = [
   {
-    name: REWARDS_NAME.GOLD,
-    value: REWARDS_VALUE.GOLD,
-    tierId: REWARDS_ID.GOLD,
+    name: "Gold",
+    value: REWARDS_INFO[2],
+    tierId: 2,
   },
   {
-    name: REWARDS_NAME.SILVER,
-    value: REWARDS_VALUE.SILVER,
-    tierId: REWARDS_ID.SILVER,
+    name: "Silver",
+    value: REWARDS_INFO[1],
+    tierId: 1,
   },
   {
-    name: REWARDS_NAME.BRONZE,
-    value: REWARDS_VALUE.BRONZE,
-    tierId: REWARDS_ID.BRONZE,
+    name: "Bronze",
+    value: REWARDS_INFO[0],
+    tierId: 0,
   },
 ];
 

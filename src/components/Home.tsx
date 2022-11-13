@@ -7,17 +7,30 @@ import icon from "../assets/siwamain.gif";
 import bronze from "../assets/bronze.png";
 import silver from "../assets/silver.png";
 import gold from "../assets/gold.png";
+
 import {
   NFTCollectionContractAddress,
   stakingContractAddress,
 } from "../config/appconf";
 import { stakingABI, NFTCollectionABI } from "../interface/abi/index";
 import { TokenHelperComponent, NFTHelperComponent } from "./Helper";
-import { HomeProps, StakedType, TierType, TierArrayType } from "../types/Types";
-import { stakedDefault } from "../types/Defaults";
 
-const Home = ({ address }: HomeProps) => {
-  const { isConnected } = useAccount();
+type StakedType = {
+  tokenId: number;
+  stakedTime: number;
+  tierId: number;
+}[];
+
+const stakedDefault = [
+  {
+    tokenId: 0,
+    stakedTime: 0,
+    tierId: 0,
+  },
+];
+
+const Home = () => {
+  const { address, isConnected } = useAccount();
   const { data: signer } = useSigner();
 
   const stakingContract = useContract({
@@ -50,14 +63,14 @@ const Home = ({ address }: HomeProps) => {
           tierId: elem.tierId.toNumber()
         });
       });
-      setStakedNFTs(() => stakedNumberTokens);
-      setStakedFetched(() => true);
+      setStakedNFTs(stakedNumberTokens);
+      setStakedFetched(true);
     };
 
     const fetchClaimableRewards = async () => {
       const claimableTokens = await stakingContract?.getTokenRewards(address);
-      setClaimableRewards(() => claimableTokens);
-      setClaimableFetched(() => true);
+      setClaimableRewards(claimableTokens);
+      setClaimableFetched(true);
     };
 
     if (isConnected && signer) {
@@ -80,7 +93,7 @@ const Home = ({ address }: HomeProps) => {
     return isApprovedForAll;
   };
 
-  const tierClaim = async ({ tokenId, tierId }: TierType) => {
+  const tierClaim = async (tokenId: number, tierId: number) => {
     if (!isConnected && !signer) return;
     try {
       await stakingContract?.claimTier(tokenId, tierId);
@@ -98,7 +111,7 @@ const Home = ({ address }: HomeProps) => {
     }
   };
 
-  const tierWithdraw = async ({ tokenId, tierId }: TierType) => {
+  const tierWithdraw = async (tokenId: number, tierId: number) => {
     if (!isConnected && !signer) return;
     try {
       await stakingContract?.withdrawTier(tokenId, tierId);
@@ -116,7 +129,7 @@ const Home = ({ address }: HomeProps) => {
     }
   };
 
-  const tierStake = async ({ tokenId, tierId }: TierType) => {
+  const tierStake = async (tokenId: number, tierId: number) => {
     if (!isConnected && !signer) return;
     const callValue = async () => {
       try {
@@ -143,7 +156,7 @@ const Home = ({ address }: HomeProps) => {
     }
   };
 
-  const tierStakeAll = async ({ tokenIds, tierId }: TierArrayType) => {
+  const tierStakeAll = async (tokenIds: number[], tierId: number) => {
     if (!isConnected && !signer) return;
 
     const callValue = async () => {

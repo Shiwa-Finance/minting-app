@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash';
 export const gatewayUrls = [
     // "https://ipfs.io/ipfs/",
     // "https://gateway.ipfs.io/ipfs/",
@@ -17,5 +17,3 @@ export const axiosConfig = {
     maxRequests: 2,
     perMilliseconds: 100
 };
-
-export const imgTimeout = 1000;
