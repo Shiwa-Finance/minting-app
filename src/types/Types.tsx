@@ -6,6 +6,10 @@ export type CHAINLIST_TYPE = {
     [index: string]: CHAIN_TYPE;
 };
 
+export type HomeProps = {
+    address: `0x${string}` | undefined
+};
+
 export type StakedType = {
     tokenId: number;
     stakedTime: number;

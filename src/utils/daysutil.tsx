@@ -1,6 +1,6 @@
 import {
     UNLOCK_INFO
-} from '../config/appconf';
+} from "../config/appconf";
 
 export const getUnlockTime = (stakedTime: number, tierId: number) => {
     const currentTime = new Date().getTime() / 1000;
