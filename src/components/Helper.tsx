@@ -6,25 +6,64 @@ import {
   BASE_URI,
   REWARDS_INFO,
   REWARDS_DATA,
-  REWARDS_VALUE,
-  REWARDS_ID,
   TOKEN_DECIMALS,
   NFTCollectionContractAddress,
   tokenContractAddress,
 } from "../config/appconf";
 import { useBalance } from "wagmi";
 import styles from "../styles/Home.module.css";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import axios from "axios";
 import rateLimit from "axios-rate-limit";
-import { getGateway, axiosConfig, imgTimeout } from "../interface/url/gateway";
+import { getGateway, axiosConfig } from "../interface/url/gateway";
 import { getUnlockTime } from "../utils/daysutil";
 import { calcPendingRewards } from "../utils/rewardsutil";
-import {
-  TokenProps, NFTProps, MetaType, TokenMetaType,
-  StakeActiveProps, StakeActiveAllProps
-} from '../types/Types';
-import { tokenMetaDefault } from "../types/Defaults";
+
+type TokenProps = {
+  address: string;
+  claimableRewards: BigNumber | undefined;
+  stakedNFTs: any[];
+};
+
+type NFTProps = {
+  address: string;
+  stakedNFTs: any[];
+  tierWithdraw: (tokenId: number, tierId: number) => Promise<void>;
+  tierClaim: (tokenId: number, tierId: number) => Promise<void>;
+  tierWithdrawAll: () => Promise<void>;
+  tierStake: (tokenId: number, tierId: number) => Promise<void>;
+  tierStakeAll: (tokenIds: number[], tierId: number) => Promise<void>;
+};
+
+type MetaType = {
+  id: string;
+  name: string;
+  image: string;
+};
+
+type TokenMetaType = {
+  id: string;
+  name: string;
+  image: string;
+}[];
+
+type StakeActiveProps = {
+  id: string;
+  tierStake: (tokenId: number, tierId: number) => Promise<void>;
+};
+
+type StakeActiveAllProps = {
+  unstakedTokenIds: number[];
+  tierStakeAll: (tokenIds: number[], tierId: number) => Promise<void>;
+};
+
+const tokenMetaDefault = [
+  {
+    id: "",
+    name: "",
+    image: "",
+  },
+];
 
 const axiosHTTP = rateLimit(axios.create(), axiosConfig);
 
@@ -34,16 +73,15 @@ export const TokenHelperComponent = ({
   stakedNFTs,
 }: TokenProps) => {
   const [activeDaysValue, setActiveDaysValue]: [number, any] = useState(
-    REWARDS_VALUE.GOLD
+    REWARDS_DATA[0].value
   );
-
   const { data: tokenData } = useBalance({
     addressOrName: address,
     token: tokenContractAddress,
   });
 
   const updateActiveDays = (nextValue: number) => {
-    setActiveDaysValue(() => nextValue);
+    setActiveDaysValue(nextValue);
   };
 
   return (
@@ -112,14 +150,13 @@ export const TokenHelperComponent = ({
 
 export const StakeActiveComponent = ({ id, tierStake }: StakeActiveProps) => {
   const [stakeDaysValue, setStakeDaysValue]: [number, any] = useState(
-    REWARDS_VALUE.GOLD
+    REWARDS_DATA[0].value
   );
-
-  const [stakeTierId, setStakeTierId]: [number, any] = useState(REWARDS_ID.GOLD);
+  const [stakeTierId, setStakeTierId]: [number, any] = useState(0);
 
   const updateStakeDays = (nextStakeDays: number, nextStakeTierId: number) => {
-    setStakeDaysValue(() => nextStakeDays);
-    setStakeTierId(() => nextStakeTierId);
+    setStakeDaysValue(nextStakeDays);
+    setStakeTierId(nextStakeTierId);
   };
 
   return (
@@ -154,11 +191,7 @@ export const StakeActiveComponent = ({ id, tierStake }: StakeActiveProps) => {
 
       <button
         className={`${styles.mainButton} ${styles.spacerBottom}`}
-        onClick={() => tierStake({
-          tokenId: parseInt(id),
-          tierId: stakeTierId
-        })
-        }
+        onClick={() => tierStake(parseInt(id), stakeTierId)}
       >
         Stake
       </button>
@@ -171,14 +204,13 @@ export const StakeActiveAllComponent = ({
   tierStakeAll,
 }: StakeActiveAllProps) => {
   const [stakeDaysValue, setStakeDaysValue]: [number, any] = useState(
-    REWARDS_VALUE.GOLD
+    REWARDS_DATA[0].value
   );
-
-  const [stakeTierId, setStakeTierId]: [number, any] = useState(REWARDS_ID.GOLD);
+  const [stakeTierId, setStakeTierId]: [number, any] = useState(0);
 
   const updateStakeDays = (nextStakeDays: number, nextStakeTierId: number) => {
-    setStakeDaysValue(() => nextStakeDays);
-    setStakeTierId(() => nextStakeTierId);
+    setStakeDaysValue(nextStakeDays);
+    setStakeTierId(nextStakeTierId);
   };
 
   return (
@@ -219,10 +251,7 @@ export const StakeActiveAllComponent = ({
 
       <button
         className={`${styles.vmainButton} ${styles.spacerBottom}`}
-        onClick={() => tierStakeAll({
-          tokenIds: unstakedTokenIds,
-          tierId: stakeTierId
-        })}
+        onClick={() => tierStakeAll(unstakedTokenIds, stakeTierId)}
       >
         Stake All
       </button>
@@ -253,7 +282,7 @@ export const NFTHelperComponent = ({
     await Moralis.start({
       apiKey: MORALIS_KEY,
     });
-    setMoralis(() => true);
+    setMoralis(true);
   };
 
   const fetchUnstaked = async () => {
@@ -284,9 +313,9 @@ export const NFTHelperComponent = ({
       return id;
     });
 
-    setUnstakedMetadata(() => unstakedDatas);
-    setUnstakedTokenIds(() => tokenIds);
-    setIsUnstakedData(() => true);
+    setUnstakedMetadata(unstakedDatas);
+    setUnstakedTokenIds(tokenIds);
+    setIsUnstakedData(true);
   };
 
   const fetchStaked = async () => {
@@ -307,16 +336,8 @@ export const NFTHelperComponent = ({
       };
     });
 
-    setStakedMetadata(() => stakedDatas);
-    setIsStakedData(() => true);
-  };
-
-  const handleImgError = (source: any) => {
-    const sourceImg = source.currentsrc;
-    source.currentTarget.onerror = null;
-    setTimeout(() => {
-      source.currentTarget.src = sourceImg;
-    }, imgTimeout);
+    setStakedMetadata(stakedDatas);
+    setIsStakedData(true);
   };
 
   useEffect(() => {
@@ -348,16 +369,11 @@ export const NFTHelperComponent = ({
                   alt={name}
                   width={150}
                   height={150}
-                  loading={"lazy"}
-                  onError={(source) => handleImgError(source)}
                 />
                 <div className={"btn-wrap"}>
                   <button
                     className={`${styles.mainButton} ${styles.spacerBottom}`}
-                    onClick={() => tierClaim({
-                      tokenId: tokenId,
-                      tierId: tierId
-                    })}
+                    onClick={() => tierClaim(tokenId, tierId)}
                   >
                     Claim
                   </button>
@@ -365,10 +381,7 @@ export const NFTHelperComponent = ({
                 <div className={"btn-wrap"}>
                   <button
                     className={`${styles.mainButton} ${styles.spacerBottom}`}
-                    onClick={() => tierWithdraw({
-                      tokenId: tokenId,
-                      tierId: tierId
-                    })}
+                    onClick={() => tierWithdraw(tokenId, tierId)}
                   >
                     Withdraw
                   </button>
@@ -408,8 +421,6 @@ export const NFTHelperComponent = ({
                     alt={name}
                     width={150}
                     height={150}
-                    loading={"lazy"}
-                    onError={(source) => handleImgError(source)}
                   />
 
                   <StakeActiveComponent id={id} tierStake={tierStake} />
